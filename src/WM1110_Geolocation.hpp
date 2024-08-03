@@ -25,7 +25,7 @@
 #endif
 
 #define TRACKER_SW_MAJOR_VER    (0)
-#define TRACKER_SW_MINOR_VER    (5)
+#define TRACKER_SW_MINOR_VER    (6)         //no time sync custom
 #define TRACKER_HW_MAJOR_VER    (1)
 #define TRACKER_HW_MINOR_VER    (0)
 

@@ -1906,11 +1906,12 @@ void WM1110_Geolocation::joined(const LbmxEvent& event)
     getDefaultProfileListByRegion(region,adr_custom_list_region);
     if (smtc_modem_adr_set_profile(0, SMTC_MODEM_ADR_PROFILE_CUSTOM, adr_custom_list_region) != SMTC_MODEM_RC_OK) abort();              //adr_custom_list_region  CUSTOM_ADR  
     
-    if (smtc_modem_time_set_sync_interval_s(TIME_SYNC_VALID_TIME / 3) != SMTC_MODEM_RC_OK) abort();     // keep call order
-    if (smtc_modem_time_set_sync_invalid_delay_s(TIME_SYNC_VALID_TIME) != SMTC_MODEM_RC_OK) abort();    // keep call order
-
-    printf("Send uplink packet to request current time from Cloud.\n");
-    if (smtc_modem_time_start_sync_service(0, SMTC_MODEM_TIME_ALC_SYNC) != SMTC_MODEM_RC_OK) abort();
+	// use default value (36 hours , 49 days)
+    //if (smtc_modem_time_set_sync_interval_s(TIME_SYNC_VALID_TIME / 3) != SMTC_MODEM_RC_OK) abort();     // keep call order
+    //if (smtc_modem_time_set_sync_invalid_delay_s(TIME_SYNC_VALID_TIME) != SMTC_MODEM_RC_OK) abort();    // keep call order
+    //
+    //printf("Send uplink packet to request current time from Cloud.\n");
+    //if (smtc_modem_time_start_sync_service(0, SMTC_MODEM_TIME_ALC_SYNC) != SMTC_MODEM_RC_OK) abort();
     
     printf("Start the timer every %lds to check if there are data need to be sent.\n",UPLINK_PERIOD);
     if (LbmxEngine::startAlarm(FIRST_UPLINK_DELAY) != SMTC_MODEM_RC_OK) abort();
@@ -1951,22 +1952,22 @@ void WM1110_Geolocation::time(const LbmxEvent& event)
 void WM1110_Geolocation::alarm(const LbmxEvent& event)
 {
     static uint8_t sync_time_interval = 0;
-    printf("----- Timer for %lds -----\n",UPLINK_PERIOD);
+    //printf("----- Timer for %lds -----\n",UPLINK_PERIOD);
     if(txProcess())
     {
         sync_time_interval = 0;
         ledOn(LED_BUILTIN);
     }
-    else
-    {
-        sync_time_interval++;
-        if((time_sync_flag == false) && (sync_time_interval >= 12))
-        {
-            printf("ReSend uplink packet to request current time from Cloud.\n");            
-            restartClockSynchService();
-            sync_time_interval = 0;
-        }
-    }
+    //else
+    //{
+    //    sync_time_interval++;
+    //    if((time_sync_flag == false) && (sync_time_interval >= 12))
+    //    {
+    //        printf("ReSend uplink packet to request current time from Cloud.\n");            
+    //        restartClockSynchService();
+    //        sync_time_interval = 0;
+    //    }
+    //}
     if (LbmxEngine::startAlarm(UPLINK_PERIOD) != SMTC_MODEM_RC_OK) abort();
 }
 
